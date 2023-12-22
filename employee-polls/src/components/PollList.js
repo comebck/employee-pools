@@ -1,8 +1,7 @@
 import Poll from "./Poll";
 
 const PollList = ({
-    questions,
-    label
+    questions
 }) => {
 
     // sort questions by timestamp => most recent first
@@ -20,19 +19,11 @@ const PollList = ({
     }
     
     return (
-        <div className="ui segment">
-            <div className="ui segment">
-                <div className="content">
-                    <h2>{label}</h2>                
-                </div>
-            </div>
-            
-            <div className="extra content">
-                <div className="ui cards">
-                    {
-                    renderPolls(sortedQuestions) 
-                    }
-                </div>
+        <div className="poll-list">
+            <div className="ui cards">
+                {
+                renderPolls(sortedQuestions) 
+                }
             </div>
         </div>
     );

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { handleAddQuestion } from '../actions/questions';
 
@@ -8,15 +8,16 @@ const NewPoll = ({
     authedUser,
     dispatch
 }) => {
+    const location = useLocation();
     const navigate = useNavigate();
     const [option1, setOption1] = useState("");
     const [option2, setOption2] = useState("");
     
     useEffect(() => {
         if (!authedUser) {
-            navigate("/login");
+            navigate("/login", { state : {from: location.pathname}});
         }
-    }, [navigate, authedUser]);
+    }, [location, navigate, authedUser]);
 
     if (!authedUser) {
         return null;

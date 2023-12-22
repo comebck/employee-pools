@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { connect } from 'react-redux';
-import { useNavigate} from 'react-router-dom';
+import { useNavigate, useLocation} from 'react-router-dom';
 
 import { setAuthedUser } from '../actions/users';
 
@@ -8,6 +8,7 @@ const Login = ({
     dispatch,
     users
 }) => {
+    const location = useLocation();
     const navigate = useNavigate();
 
     const [login, setLogin] = useState("");
@@ -31,7 +32,12 @@ const Login = ({
 
         if (login in users && users[login].password === password) {
             dispatch(setAuthedUser(login));
-            navigate("/");
+            let from = '/';
+            if (location.state && location.state.from) {
+                from = location.state.from
+            }
+
+            navigate(from);
         } else {
             setErrorMessage("Incorrect username or password. Please check your credentials and try again.");
             setLogin("");
@@ -50,6 +56,7 @@ const Login = ({
                     <label>Login</label>
                     <input
                         className="login-input"
+                        data-testid="login-input"
                         type="text"
                         placeholder="Login"
                         value={login}
@@ -61,6 +68,7 @@ const Login = ({
                     <label>Password</label>
                     <input
                         className="password-input"
+                        data-testid="password-input"
                         type="password"
                         placeholder="Password"
                         value={password}
@@ -71,11 +79,15 @@ const Login = ({
                 {errorMessage ? (
                     <div className="ui error message">
                         <div className="header">Login Error</div>
-                        <p>{errorMessage}</p>
+                        <p data-testid="error-header">{errorMessage}</p>
                     </div>
                 ) : null}                
 
-                <button className="ui submit button" disabled={login === "" || password === ""}>
+                <button 
+                    className="ui submit button" 
+                    data-testid="submit-button"
+                    disabled={login === "" || password === ""}
+                >
                     Submit
                 </button>
             </form>

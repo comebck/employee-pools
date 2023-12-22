@@ -1,8 +1,8 @@
+import { useState, useEffect} from "react";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import PollList from "./PollList";
-import { useEffect } from "react";
 
 const Dashboard = ({
     authedUser,
@@ -10,11 +10,17 @@ const Dashboard = ({
     questions
 }) => {    
     const navigate = useNavigate();
+    const [activeTab, setActiveTab] = useState('newQuestions');
+
     useEffect(() => {
         if (!authedUser) {
             navigate("/login");
         }
     }, [navigate, authedUser]);
+
+    const handleTabClick = (tab) => {
+        setActiveTab(tab);
+    };
 
     if (!authedUser) {
         return null;
@@ -30,15 +36,34 @@ const Dashboard = ({
     })
 
     return (
-        <div className="ui segments">
-            <PollList 
-                questions={newQuestions}
-                label="New Questions"
-            />
-            <PollList 
-                questions={doneQuestions}
-                label="Done"
-            />
+        <div>
+            <div className="ui top attached tabular menu">
+                <div 
+                    className={activeTab === "newQuestions" ? "active item" : "item"}
+                    onClick={() => handleTabClick("newQuestions")}
+                >
+                    New Questions
+                </div>
+                <div 
+                    className={activeTab === "doneQuestions" ? "active item" : "item"}
+                    onClick={() => handleTabClick("doneQuestions")}
+                >
+                    Done
+                </div>
+            </div>
+            <div className="ui bottom attached active tab segment">
+                {activeTab === "newQuestions" ?
+                    (
+                        <PollList 
+                            questions={newQuestions}
+                        />
+                    ) : (
+                        <PollList 
+                            questions={doneQuestions}
+                        />
+                    )                
+                }
+            </div>            
         </div>
     );
 };

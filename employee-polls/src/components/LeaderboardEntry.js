@@ -11,17 +11,17 @@ const LeaderboardEntry = ({
                 <h4 className="ui image header">
                     <img alt="user-avatar" src={userAvatar} className="ui mini rounded image" />
                     <div className="content">
-                        {userName}
+                        <p data-testid="user-name">{userName}</p>
                         <div className="sub header">
                             {userID}
                         </div>
                     </div>
                 </h4>
             </td>
-            <td>
+            <td data-testid="answers-count">
                 {answersCount}
             </td>
-            <td>
+            <td data-testid="questions-count"> 
                 {questionsCount}
             </td>
         </tr>

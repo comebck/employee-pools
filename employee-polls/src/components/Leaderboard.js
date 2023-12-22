@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { connect } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import {faker} from '@faker-js/faker'
 
@@ -10,13 +10,13 @@ const Leaderboard = ({
     authedUser,
     users
 }) => {
-
+    const location = useLocation();
     const navigate = useNavigate();
     useEffect(() => {
         if (!authedUser) {
-            navigate("/login");
+            navigate("/login", { state : {from: location.pathname}});
         }
-    }, [navigate, authedUser]);
+    }, [location, navigate, authedUser]);
 
     if (!authedUser) {
         return null;
